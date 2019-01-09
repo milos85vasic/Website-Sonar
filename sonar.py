@@ -22,6 +22,9 @@ def log(what):
 
 def check(website, configuration):
     log("Checking: " + website)
+    if "http" not in website:
+        log("No schema defined for: " + website + ", falling back to default: http:// schema.")
+        website = "http://" + website
     response = requests.get(website)
     if response.status_code != 200 and response.status_code != 201:
         return False
