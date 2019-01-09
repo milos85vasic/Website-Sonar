@@ -5,6 +5,7 @@ Tool used to periodically ping associated websites and trigger alarm if website 
 ## How to use
 
 - Make sure [Requests](http://docs.python-requests.org/en/latest/) python library is installed on your system
+- Make sure that [Slack Python API](https://github.com/slackapi/python-slackclient) is installed
 - Clone the project
 - Initialize and clone all git submodules
 - In project root create configuration.py with the following structure (as example):

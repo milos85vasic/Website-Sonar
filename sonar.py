@@ -1,3 +1,4 @@
+import os
 import time
 import requests
 from requests import ConnectionError
@@ -11,8 +12,10 @@ working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
 default_frequency = 10 * 60 if not debug else 10
-headers = {'user-agent': 'Website Sonar, version: ' + version}
+key_notification_mechanism_slack = "Slack-Notifier"
+key_notification_mechanism_email = "Email-Notifier"
 connectivity_verification_website = "https://www.google.com"
+headers = {'user-agent': 'Website Sonar, version: ' + version}
 
 elapsed_times = {}
 for item in websites:
@@ -42,8 +45,21 @@ def check(website, configuration):
     return True
 
 
+def run(what):
+    for cmd in what:
+        os.system(cmd)
+
+
 def alert(website, configuration):
-    log("Website check failed: " + website)
+    message = "Website check failed: " + website
+    log(message)
+    for mechanism in notification:
+        if mechanism == key_notification_mechanism_slack:
+
+            continue
+        if mechanism == key_notification_mechanism_email:
+            # Ignore. TODO: Implement email notification support.
+            continue
     return
 
 
