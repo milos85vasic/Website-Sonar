@@ -37,7 +37,7 @@ def check(website, configuration):
             return False
         body = response.text
         if key_verification in configuration:
-            for criteria in configuration[configuration][key_verification]:
+            for criteria in configuration[key_verification]:
                 if criteria not in body:
                     return False
     except ConnectionError:
