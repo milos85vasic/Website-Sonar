@@ -71,6 +71,7 @@ def slack(message):
 
 
 def run_sonar():
+    slack("Website Sonar started. Version: " + version)
     while True:
         time.sleep(working_frequency)
         for website in elapsed_times:
