@@ -1,4 +1,5 @@
 import time
+import requests
 
 from configuration import *
 
@@ -6,11 +7,12 @@ debug = True
 verbose = True
 working_frequency = 1
 key_frequency = 'frequency'
+key_verification = 'verification'
 default_frequency = 10 * 60 if not debug else 10
 
 elapsed_times = {}
-for website in websites:
-    elapsed_times[website] = 0
+for item in websites:
+    elapsed_times[item] = 0
 
 
 def log(what):
@@ -20,6 +22,14 @@ def log(what):
 
 def check(website, configuration):
     log("Checking: " + website)
+    response = requests.get(website)
+    if response.status_code != 200 and response.status_code != 201:
+        return False
+    body = response.text
+    if key_verification in configuration:
+        for criteria in configuration[configuration]:
+            if criteria not in body:
+                return False
     return True
 
 
@@ -28,14 +38,19 @@ def alert(website, configuration):
     return
 
 
-while True:
-    time.sleep(working_frequency)
-    for website in elapsed_times:
-        elapsed_times[website] = elapsed_times[website] + 1
-        expected_frequency = default_frequency
-        if key_frequency in websites[website]:
-            expected_frequency = websites[website][key_frequency]
-        if elapsed_times[website] >= expected_frequency:
-            elapsed_times[website] = 0
-            if not check(website, websites[website]):
-                alert(website, websites[website])
+def run_sonar():
+    while True:
+        time.sleep(working_frequency)
+        for website in elapsed_times:
+            elapsed_times[website] = elapsed_times[website] + 1
+            expected_frequency = default_frequency
+            if key_frequency in websites[website]:
+                expected_frequency = websites[website][key_frequency]
+            if elapsed_times[website] >= expected_frequency:
+                elapsed_times[website] = 0
+                if not check(website, websites[website]):
+                    alert(website, websites[website])
+
+
+if __name__ == '__main__':
+    run_sonar()
