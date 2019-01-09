@@ -50,3 +50,9 @@ or
 ```
 $ python sonar.py &
 ```
+
+or with Venv (example):
+
+```
+$ source path_to_your_venv/bin/activate; python ~/website-sonar/sonar.py &
+```
