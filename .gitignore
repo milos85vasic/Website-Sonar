@@ -105,3 +105,4 @@ venv.bak/
 
 Slack-Notifier/configuration.py
 .idea
+configuration.py
