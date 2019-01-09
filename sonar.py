@@ -5,9 +5,9 @@ from requests import ConnectionError
 
 from configuration import *
 
-debug = True
+debug = False
 verbose = True
-version = "1.0.0"
+version = "1.0.1"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
