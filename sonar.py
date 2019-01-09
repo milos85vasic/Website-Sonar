@@ -12,6 +12,7 @@ key_frequency = 'frequency'
 key_verification = 'verification'
 default_frequency = 10 * 60 if not debug else 10
 headers = {'user-agent': 'Website Sonar, version: ' + version}
+connectivity_verification_website = "https://www.google.com"
 
 elapsed_times = {}
 for item in websites:
@@ -24,7 +25,6 @@ def log(what):
 
 
 def check(website, configuration):
-    log("Checking: " + website)
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
@@ -57,6 +57,9 @@ def run_sonar():
                 expected_frequency = websites[website][key_frequency]
             if elapsed_times[website] >= expected_frequency:
                 elapsed_times[website] = 0
+                if not check(connectivity_verification_website, {}):
+                    log("No internet connection available.")
+                    continue
                 if not check(website, websites[website]):
                     alert(website, websites[website])
 
