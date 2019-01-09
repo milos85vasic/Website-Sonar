@@ -33,11 +33,11 @@ Websites without 'frequency' value will be checked on every 10 minutes (default 
 
 - Start website sonar:
 ```
-$ python sonar.py"
+$ python sonar.py
 ```
 
 or
 
 ```
-$ python sonar.py &"
+$ python sonar.py &
 ```
