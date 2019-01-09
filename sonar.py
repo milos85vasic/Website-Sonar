@@ -50,12 +50,15 @@ def run(what):
         os.system(cmd)
 
 
-def alert(website, configuration):
+def alert(website):
     message = "Website check failed: " + website
     log(message)
     for mechanism in notification:
         if mechanism == key_notification_mechanism_slack:
-
+            command = [
+                "python Slack/notify.py \"" + message + "\""
+            ]
+            run(command)
             continue
         if mechanism == key_notification_mechanism_email:
             # Ignore. TODO: Implement email notification support.
@@ -77,7 +80,7 @@ def run_sonar():
                     log("No internet connection available.")
                     continue
                 if not check(website, websites[website]):
-                    alert(website, websites[website])
+                    alert(website)
 
 
 if __name__ == '__main__':
