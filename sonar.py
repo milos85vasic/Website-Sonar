@@ -5,10 +5,12 @@ from configuration import *
 
 debug = True
 verbose = True
+version = "1.0.0"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
 default_frequency = 10 * 60 if not debug else 10
+headers = {'user-agent': 'Website Sonar, version: ' + version}
 
 elapsed_times = {}
 for item in websites:
@@ -25,14 +27,17 @@ def check(website, configuration):
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
-    response = requests.get(website)
-    if response.status_code != 200 and response.status_code != 201:
+    try:
+        response = requests.get(website, headers=headers)
+        if response.status_code != 200 and response.status_code != 201:
+            return False
+        body = response.text
+        if key_verification in configuration:
+            for criteria in configuration[configuration][key_verification]:
+                if criteria not in body:
+                    return False
+    except:
         return False
-    body = response.text
-    if key_verification in configuration:
-        for criteria in configuration[configuration][key_verification]:
-            if criteria not in body:
-                return False
     return True
 
 
