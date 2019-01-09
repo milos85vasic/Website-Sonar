@@ -7,7 +7,7 @@ from configuration import *
 
 debug = False
 verbose = True
-version = "1.0.4"
+version = "1.0.5"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -72,7 +72,6 @@ def slack(message):
 
 
 def run_sonar():
-    slack("Website Sonar started. Version: " + version)
     while True:
         time.sleep(working_frequency)
         for website in elapsed_times:
