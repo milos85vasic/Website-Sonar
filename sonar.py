@@ -1,5 +1,6 @@
 import time
 import requests
+from requests import ConnectionError
 
 from configuration import *
 
@@ -36,7 +37,7 @@ def check(website, configuration):
             for criteria in configuration[configuration][key_verification]:
                 if criteria not in body:
                     return False
-    except:
+    except ConnectionError:
         return False
     return True
 
