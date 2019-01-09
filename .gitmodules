@@ -1,0 +1,3 @@
+[submodule "Slack-Notifier"]
+	path = Slack-Notifier
+	url = https://github.com/milos85vasic/Website-Sonar.git
