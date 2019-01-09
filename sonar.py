@@ -7,7 +7,7 @@ from configuration import *
 
 debug = False
 verbose = True
-version = "1.0.1"
+version = "1.0.2"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -55,15 +55,19 @@ def alert(website):
     log(message)
     for mechanism in notification:
         if mechanism == key_notification_mechanism_slack:
-            command = [
-                "python Slack/notify.py \"" + message + "\""
-            ]
-            run(command)
+            slack(message)
             continue
         if mechanism == key_notification_mechanism_email:
             # Ignore. TODO: Implement email notification support.
             continue
     return
+
+
+def slack(message):
+    command = [
+        "python Slack/notify.py \"" + message + "\""
+    ]
+    run(command)
 
 
 def run_sonar():
