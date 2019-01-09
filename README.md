@@ -20,6 +20,8 @@ websites = {
     "http://www.kolekcionari.rs": {},
     "www.fundamental-kotlin.com": {}
 }
+
+notification = ["Slack-Notifier", "Email-Notifier"]
 ```
 
 Where 'websites' represents dictionary with sonar urls as keys and configurations as value pairs.
@@ -30,6 +32,10 @@ Each configuration contains:
 
 Websites without 'verification' values will not check against verification strings.
 Websites without 'frequency' value will be checked on every 10 minutes (default value).
+
+'notification' list represents the list of notification mechanisms that will be used to notify users about unreachable website.
+
+For now only [Slack Notifier](https://github.com/milos85vasic/Slack-Notifier) is supported.
 
 - Start website sonar:
 ```
