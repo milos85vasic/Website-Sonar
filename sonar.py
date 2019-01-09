@@ -7,7 +7,7 @@ from configuration import *
 
 debug = False
 verbose = True
-version = "1.0.3"
+version = "1.0.4"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -67,7 +67,7 @@ def slack(message):
     command = [
         "python Slack/notify.py \"" + message + "\""
     ]
-    if check(connectivity_verification_website):
+    if check(connectivity_verification_website, {}):
         run(command)
 
 
