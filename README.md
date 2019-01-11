@@ -25,6 +25,8 @@ websites = {
 }
 
 notification = ["Slack-Notifier", "Email-Notifier"]
+
+overrides = {}
 ```
 
 Where 'websites' represents dictionary with sonar urls as keys and configurations as value pairs.
@@ -56,3 +58,13 @@ or with Venv (example):
 ```
 $ source path_to_your_venv/bin/activate; cd ~/website-sonar; python ~/website-sonar/sonar.py &
 ```
+
+Some parameters can be overriden. For example if we define overrides in our configuration.py:
+
+```python
+overrides = {
+    "working_frequency": 10
+}
+```
+
+Website sonar's timer will tick on every 10 seconds.

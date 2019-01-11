@@ -11,6 +11,7 @@ version = "1.0.5"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
+key_working_frequency = 'working_frequency'
 default_frequency = 10 * 60 if not debug else 10
 key_notification_mechanism_slack = "Slack-Notifier"
 key_notification_mechanism_email = "Email-Notifier"
@@ -28,6 +29,8 @@ def log(what):
 
 
 def check(website, configuration):
+    if debug:
+        log("Checking:" + website)
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
@@ -72,10 +75,15 @@ def slack(message):
 
 
 def run_sonar():
+    frequency = working_frequency
+    if key_working_frequency in overrides:
+        frequency = overrides[key_working_frequency]
     while True:
-        time.sleep(working_frequency)
+        time.sleep(frequency)
         for website in elapsed_times:
-            elapsed_times[website] = elapsed_times[website] + 1
+            elapsed_times[website] = elapsed_times[website] + frequency
+            if debug:
+                log("Tick. " + str(elapsed_times[website]))
             expected_frequency = default_frequency
             if key_frequency in websites[website]:
                 expected_frequency = websites[website][key_frequency]
