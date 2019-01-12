@@ -40,7 +40,8 @@ Websites without 'frequency' value will be checked on every 10 minutes (default 
 
 'notification' list represents the list of notification mechanisms that will be used to notify users about unreachable website.
 
-For now only [Slack Notifier](https://github.com/milos85vasic/Slack-Notifier) is supported.
+There are two notification mechanism supported: [Slack Notifier](https://github.com/milos85vasic/Slack-Notifier) and
+ [Email Notifier](https://github.com/milos85vasic/Email-Notifier).
 
 - Start website sonar:
 ```
