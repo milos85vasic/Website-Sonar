@@ -1,3 +1,6 @@
 [submodule "Slack"]
 	path = Slack
 	url = https://github.com/milos85vasic/Slack-Notifier.git
+[submodule "Email"]
+	path = Email
+	url = https://github.com/milos85vasic/Email-Notifier.git

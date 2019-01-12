@@ -7,7 +7,7 @@ from configuration import *
 
 debug = False
 verbose = True
-version = "1.0.5"
+version = "1.0.6"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -61,7 +61,7 @@ def alert(website):
             slack(message)
             continue
         if mechanism == key_notification_mechanism_email:
-            # Ignore. TODO: Implement email notification support.
+            email(message)
             continue
     return
 
@@ -74,7 +74,17 @@ def slack(message):
         run(command)
 
 
+def email(message):
+    command = [
+        "python Email/notify.py \"" + message + "\""
+    ]
+    if check(connectivity_verification_website, {}):
+        run(command)
+
+
 def run_sonar():
+    if key_notification_mechanism_email in notification:
+        email("Website Sonar (version: " + version + ") is STARTED.")
     frequency = working_frequency
     if key_working_frequency in overrides:
         frequency = overrides[key_working_frequency]
