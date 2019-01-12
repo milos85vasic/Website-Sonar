@@ -60,7 +60,7 @@ or with Venv (example):
 $ source path_to_your_venv/bin/activate; cd ~/website-sonar; python ~/website-sonar/sonar.py &
 ```
 
-Some parameters can be overriden. For example if we define overrides in our configuration.py:
+Some parameters can be overridden. For example if we define overrides in our configuration.py:
 
 ```python
 overrides = {
