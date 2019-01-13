@@ -107,3 +107,4 @@ Slack-Notifier/configuration.py
 .idea
 configuration.py
 start_sonar.sh
+website-sonar.log

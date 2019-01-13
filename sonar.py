@@ -1,13 +1,15 @@
 import os
 import time
 import requests
+import logging
 from requests import ConnectionError
 
 from configuration import *
 
 debug = False
 verbose = True
-version = "1.0.6"
+do_logging = True
+version = "1.0.7"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -26,6 +28,8 @@ for item in websites:
 def log(what):
     if verbose:
         print what
+    if do_logging:
+        logging.info(what)
 
 
 def check(website, configuration):
@@ -83,8 +87,20 @@ def email(message):
 
 
 def run_sonar():
+    if do_logging:
+        logging.basicConfig(
+            filename="website-sonar.log",
+            filemode='a',
+            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+            datefmt='%H:%M:%S',
+            level=logging.DEBUG
+        )
+
+    start_message = "Website Sonar (version: " + version + ") is STARTED."
     if key_notification_mechanism_email in notification:
-        email("Website Sonar (version: " + version + ") is STARTED.")
+        email(start_message)
+    log(start_message)
+
     frequency = working_frequency
     if key_working_frequency in overrides:
         frequency = overrides[key_working_frequency]
@@ -102,7 +118,9 @@ def run_sonar():
                 if not check(connectivity_verification_website, {}):
                     log("No internet connection available.")
                     continue
-                if not check(website, websites[website]):
+                if check(website, websites[website]):
+                    log("Website " + website + " is OK.")
+                else:
                     alert(website)
 
 
