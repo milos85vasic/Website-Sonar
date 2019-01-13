@@ -36,8 +36,11 @@ def check(website, configuration):
     if website != connectivity_verification_website:
         log("Checking:" + website)
     else:
-        if debug:
-            log("Checking for internet connection.")
+        log(
+            "Checking for internet connection. Website used to verify connectivity: "
+            + connectivity_verification_website
+        )
+
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
