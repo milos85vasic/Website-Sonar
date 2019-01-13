@@ -1,5 +1,6 @@
 import os
 import time
+import urllib2
 import requests
 import logging
 from requests import ConnectionError
@@ -32,15 +33,16 @@ def log(what):
         logging.info(what)
 
 
-def check(website, configuration):
-    if website != connectivity_verification_website:
-        log("Checking:" + website)
-    else:
-        log(
-            "Checking for internet connection. Website used to verify connectivity: "
-            + connectivity_verification_website
-        )
+def internet_on():
+    try:
+        urllib2.urlopen(connectivity_verification_website, timeout=1)
+        return True
+    except urllib2.URLError:
+        return False
 
+
+def check(website, configuration):
+    log("Checking:" + website)
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
@@ -80,7 +82,7 @@ def slack(message):
     command = [
         "python Slack/notify.py \"" + message + "\""
     ]
-    if check(connectivity_verification_website, {}):
+    if internet_on():
         run(command)
 
 
@@ -88,7 +90,7 @@ def email(message):
     command = [
         "python Email/notify.py \"" + message + "\""
     ]
-    if check(connectivity_verification_website, {}):
+    if internet_on():
         run(command)
 
 
@@ -121,7 +123,7 @@ def run_sonar():
                 expected_frequency = websites[website][key_frequency]
             if elapsed_times[website] >= expected_frequency:
                 elapsed_times[website] = 0
-                if not check(connectivity_verification_website, {}):
+                if not internet_on():
                     log("No internet connection available.")
                     continue
                 if check(website, websites[website]):
