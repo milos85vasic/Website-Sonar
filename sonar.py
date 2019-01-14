@@ -10,7 +10,7 @@ from configuration import *
 debug = False
 verbose = True
 do_logging = True
-version = "1.0.7"
+version = "1.0.8"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -24,6 +24,8 @@ headers = {'user-agent': 'Website Sonar, version: ' + version}
 elapsed_times = {}
 for item in websites:
     elapsed_times[item] = 0
+
+unreachable_websites = []
 
 
 def log(what):
@@ -65,9 +67,15 @@ def run(what):
         os.system(cmd)
 
 
-def alert(website):
-    message = "Website check failed: " + website
+def fail(website):
+    unreachable_websites.extend(website)
+    message = "Website is not reachable: " + website
     log(message)
+    notify(message)
+    return
+
+
+def notify(message):
     for mechanism in notification:
         if mechanism == key_notification_mechanism_slack:
             slack(message)
@@ -75,7 +83,6 @@ def alert(website):
         if mechanism == key_notification_mechanism_email:
             email(message)
             continue
-    return
 
 
 def slack(message):
@@ -112,6 +119,7 @@ def run_sonar():
     frequency = working_frequency
     if key_working_frequency in overrides:
         frequency = overrides[key_working_frequency]
+
     while True:
         time.sleep(frequency)
         for website in elapsed_times:
@@ -126,10 +134,18 @@ def run_sonar():
                 if not internet_on():
                     log("No internet connection available.")
                     continue
+
                 if check(website, websites[website]):
-                    log("Website " + website + " is OK.")
+                    message = "Website " + website + " is ok."
+                    if website in unreachable_websites:
+                        message = "Website " + website + " is reachable again."
+                        unreachable_websites.remove(website)
+                        notify(message)
+
+                    log(message)
                 else:
-                    alert(website)
+                    if website not in unreachable_websites:
+                        fail(website)
 
 
 if __name__ == '__main__':
