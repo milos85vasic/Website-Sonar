@@ -16,7 +16,7 @@ key_frequency = 'frequency'
 key_verification = 'verification'
 key_working_frequency = 'working_frequency'
 default_frequency = 10 * 60 if not debug else 10
-key_notification_mechanism_null = "Null"
+key_notification_mechanism_println = "Println"
 key_notification_mechanism_slack = "Slack-Notifier"
 key_notification_mechanism_email = "Email-Notifier"
 connectivity_verification_website = "https://www.google.com"
@@ -84,8 +84,8 @@ def notify(message):
         if mechanism == key_notification_mechanism_email:
             email(message)
             continue
-        if mechanism == key_notification_mechanism_null:
-            print ("> > > > > > > > > > > > > > > > > > > " + message)
+        if mechanism == key_notification_mechanism_println:
+            print ("MSG :: " + message)
             continue
 
 
