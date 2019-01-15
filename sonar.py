@@ -69,7 +69,7 @@ def run(what):
 
 
 def fail(website):
-    unreachable_websites.extend(website)
+    unreachable_websites.append(website)
     message = "Website is not reachable: " + website
     log(message)
     notify(message)
