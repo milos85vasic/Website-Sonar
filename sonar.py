@@ -10,7 +10,7 @@ from configuration import *
 debug = False
 verbose = True
 do_logging = True
-version = "1.0.8"
+version = "1.0.9"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -150,6 +150,8 @@ def run_sonar():
                 else:
                     if website not in unreachable_websites:
                         fail(website)
+                    else:
+                        log("Website is still not reachable: " + website)
 
 
 if __name__ == '__main__':
