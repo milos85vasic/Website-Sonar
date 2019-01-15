@@ -14,7 +14,7 @@ app_log = logging.getLogger('root')
 debug = False
 verbose = True
 do_logging = True
-version = "1.0.10"
+version = "1.0.11"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -69,6 +69,22 @@ def check(website, configuration):
     except ConnectionError:
         return False
     return True
+
+
+def perform_check(website):
+    if check(website, websites[website]):
+        message = "Website " + website + " is ok."
+        if website in unreachable_websites:
+            message = "Website " + website + " is reachable again."
+            unreachable_websites.remove(website)
+            notify(message)
+
+        log(message)
+    else:
+        if website not in unreachable_websites:
+            fail(website)
+        else:
+            log("Website is still not reachable: " + website)
 
 
 def run(what):
@@ -159,19 +175,7 @@ def run_sonar():
                     log("No internet connection available.")
                     continue
 
-                if check(website, websites[website]):
-                    message = "Website " + website + " is ok."
-                    if website in unreachable_websites:
-                        message = "Website " + website + " is reachable again."
-                        unreachable_websites.remove(website)
-                        notify(message)
-
-                    log(message)
-                else:
-                    if website not in unreachable_websites:
-                        fail(website)
-                    else:
-                        log("Website is still not reachable: " + website)
+                perform_check(website)
 
 
 if __name__ == '__main__':
