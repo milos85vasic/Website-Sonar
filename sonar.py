@@ -3,14 +3,18 @@ import time
 import urllib2
 import requests
 import logging
+
 from requests import ConnectionError
+from logging.handlers import RotatingFileHandler
 
 from configuration import *
+
+app_log = logging.getLogger('root')
 
 debug = False
 verbose = True
 do_logging = True
-version = "1.0.9"
+version = "1.0.10"
 working_frequency = 1
 key_frequency = 'frequency'
 key_verification = 'verification'
@@ -21,6 +25,10 @@ key_notification_mechanism_slack = "Slack-Notifier"
 key_notification_mechanism_email = "Email-Notifier"
 connectivity_verification_website = "https://www.google.com"
 headers = {'user-agent': 'Website Sonar, version: ' + version}
+
+log_filename = 'website-sonar.log'
+log_files_count = 10 if not debug else 5
+log_max_file_size = 5 * 1024 * 1024 if not debug else 1024
 
 elapsed_times = {}
 for item in websites:
@@ -33,7 +41,7 @@ def log(what):
     if verbose:
         print what
     if do_logging:
-        logging.info(what)
+        app_log.info(what)
 
 
 def internet_on():
@@ -45,7 +53,7 @@ def internet_on():
 
 
 def check(website, configuration):
-    log("Checking:" + website)
+    log("Checking: " + website)
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
         website = "http://" + website
@@ -114,6 +122,18 @@ def run_sonar():
             datefmt='%H:%M:%S',
             level=logging.DEBUG
         )
+
+        formatter = logging.Formatter('%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s')
+
+        handler = RotatingFileHandler(
+            log_filename, mode='a', maxBytes=log_max_file_size, backupCount=log_files_count, encoding=None, delay=0
+        )
+
+        handler.setFormatter(formatter)
+        handler.setLevel(logging.DEBUG)
+
+        app_log.setLevel(logging.DEBUG)
+        app_log.addHandler(handler)
 
     start_message = "Website Sonar (version: " + version + ") is STARTED."
     if key_notification_mechanism_email in notification:
