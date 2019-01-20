@@ -14,6 +14,9 @@ param_configuration_name = '--configuration'
 configuration_default_file = 'configuration.json'
 
 configuration = {}
+elapsed_times = {}
+unreachable_websites = []
+
 key_websites = 'websites'
 key_overrides = 'overrides'
 key_notification = 'notification'
@@ -41,6 +44,9 @@ def load_configuration():
             configuration.update(json.loads(json_str))
             if key_websites in configuration and key_overrides in configuration and \
                     key_connectivity_verification_website in configuration[key_overrides]:
+
+                for item in configuration[key_websites]:
+                    elapsed_times[item] = 0
                 return True
         except:
             return False
@@ -66,12 +72,6 @@ headers = {'user-agent': 'Website Sonar, version: ' + version}
 log_filename = 'website-sonar.log'
 log_files_count = 10 if not debug else 5
 log_max_file_size = 5 * 1024 * 1024 if not debug else 1024
-
-elapsed_times = {}
-for item in configuration[key_websites]:
-    elapsed_times[item] = 0
-
-unreachable_websites = []
 
 
 def log(what):
