@@ -2,6 +2,8 @@
 
 Tool used to periodically ping associated websites and trigger alarm if website is unavailable.
 
+This version (1.2.X) is currently in phase of development (it is not usable yet). See releases section for V1.1.X versions.
+
 ## How to use
 
 - Make sure [Requests](http://docs.python-requests.org/en/latest/) python library is installed on your system
