@@ -14,46 +14,41 @@ This version (1.2.X) is currently in phase of development (it is not usable yet)
 
 ```json
 {
-  "websites": [
-      {
-        "url": "www.fundamental-kotlin.com",
-        "frequency": 20,
-        "verification": [
-          "What is Kotlin?"
-        ]
-      },
-      {
-        "url": "https://www.damodred.com"
-      },
-      {
-        "url": "https://www.irichanin.com",
-        "frequency": 20,
-        "verification": [
-          "Agricultural holding Irichanin",
-          "Proudly powered by WordPress"
-        ]
-      },
-      {
-        "url": "http://www.kolekcionari.rs"
-      }
-    ],
-    "notification": [
-      "Slack-Notifier",
-      "Email-Notifier"
-    ],
-    "overrides": {
-      "working_frequency": 10,
-      "connectivity_verification_website": "https://www.example.com"
+  "websites": {
+    "www.fundamental-kotlin.com": {
+      "frequency": 20,
+      "verification": [
+        "What is Kotlin?"
+      ]
+    },
+    "https://www.damodred.com": {},
+    "https://www.irichanin.com": {
+      "frequency": 20,
+      "verification": [
+        "Agricultural holding Irichanin",
+        "Proudly powered by WordPress"
+      ]
+    },
+    "http://www.kolekcionari.rs": {
     }
+  },
+  "notification": [
+    "Println",
+    "Slack-Notifier",
+    "Email-Notifier"
+  ],
+  "overrides": {
+    "working_frequency": 10,
+    "connectivity_verification_website": "https://www.google.com"
+  }
 }
 ```
 
-Where 'websites' represents list with website configurations.
+Where 'websites' represents dict. with website configurations.
 Each configuration contains:
     
-1. 'url', website url
-2. 'verification', list of strings to search for verification (if any of strings from the list is not found in url's response, sonar considers check as failure)
-3. 'frequency', check frequency in seconds.
+1. 'verification', list of strings to search for verification (if any of strings from the list is not found in url's response, sonar considers check as failure)
+2. 'frequency', check frequency in seconds.
 
 Websites without 'verification' values will not check against verification strings.
 Websites without 'frequency' value will be checked on every 10 minutes (default value).

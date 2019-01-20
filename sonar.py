@@ -17,7 +17,6 @@ configuration = {}
 elapsed_times = {}
 unreachable_websites = []
 
-key_url = 'url'
 key_websites = 'websites'
 key_overrides = 'overrides'
 key_notification = 'notification'
@@ -48,7 +47,7 @@ def load_configuration():
                     key_connectivity_verification_website in configuration[key_overrides]:
 
                 for item in configuration[key_websites]:
-                    elapsed_times[item[key_url]] = 0
+                    elapsed_times[item] = 0
                 return True
         except Exception as e:
             log("Error: " + str(e))
@@ -92,7 +91,7 @@ def internet_on():
         return False
 
 
-def check(website, configuration):
+def check(website, website_configuration):
     log("Checking: " + website)
     if "http" not in website:
         log("No schema defined for: " + website + ", falling back to default: http:// schema.")
@@ -102,8 +101,8 @@ def check(website, configuration):
         if response.status_code != 200 and response.status_code != 201:
             return False
         body = response.text
-        if key_verification in configuration:
-            for criteria in configuration[key_verification]:
+        if key_verification in website_configuration:
+            for criteria in website_configuration[key_verification]:
                 if criteria not in body:
                     return False
     except ConnectionError:
