@@ -17,6 +17,7 @@ configuration = {}
 elapsed_times = {}
 unreachable_websites = []
 
+key_url = 'url'
 key_websites = 'websites'
 key_overrides = 'overrides'
 key_notification = 'notification'
@@ -41,14 +42,16 @@ def load_configuration():
         try:
             json_file = open(configuration_file)
             json_str = json_file.read()
-            configuration.update(json.loads(json_str))
+            loaded = json.loads(json_str)
+            configuration.update(loaded)
             if key_websites in configuration and key_overrides in configuration and \
                     key_connectivity_verification_website in configuration[key_overrides]:
 
                 for item in configuration[key_websites]:
-                    elapsed_times[item] = 0
+                    elapsed_times[item[key_url]] = 0
                 return True
-        except:
+        except Exception as e:
+            log("Error: " + str(e))
             return False
     return False
 
