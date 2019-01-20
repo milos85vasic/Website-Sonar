@@ -36,6 +36,8 @@ for item in websites:
 
 unreachable_websites = []
 
+configuration_default_file = 'configuration.json'
+
 
 def log(what):
     if verbose:
