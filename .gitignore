@@ -106,5 +106,6 @@ venv.bak/
 Slack-Notifier/configuration.py
 .idea
 configuration.py
+configuration*.json
 start_sonar.sh
 website-sonar.log*
